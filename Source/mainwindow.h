@@ -238,6 +238,7 @@ private:
     QAudioOutput * stimAudio;
     QProgressDialog * progressDialog;
     bool adjustVideoAfterStart = true;
+    bool tempyPause = false;
 
 private slots:
     void videoStateChanged(QMediaPlayer::State s);
@@ -307,6 +308,7 @@ private slots:
     void reportEstimAudioState();
     void calculateStimOffsetFromVideo();
     void on_actionExport_E_Stim_Track_triggered();
+    void on_resumeTimer_timeout();
 };
 
 #endif // MAINWINDOW_H

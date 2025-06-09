@@ -48,11 +48,13 @@
 #include "eventdatamodel.h"
 #include <QSerialPort>
 #include "buttplug/buttpluginterface.h"
+#include <QSignalBlocker>
 
 //how many events should we 'buffer' by sending them to the arduino hardware ahead of real time?
 //this lets it spin up motors in advance, or enqueue or ramp up its internal events for most accurate timings.
 #define MAX_ENQUEUED_EVENTS 5
 #define PREF_LAST_SUCCESSFULLY_LOADED_VIDEO "Last Successfully Loaded Video"
+#define LATENCY_NUDGE_MS 20
 
 /*#include <QItemDelegate>
 #include <QItemEditorFactory>*/
@@ -566,6 +568,14 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         sendSerialTimecodeSync();
         if (OptionsDialog::connectToHandy())
             setHandySyncOffset(OptionsDialog::handySyncBaseOffset() + playbackLatency);
+        if (OptionsDialog::emitEstimSignal() && stimAudio != nullptr)
+        {
+            tempyPause = true;
+            //didn't work for some reason. Have added signal blocker to try to fix, but untested.
+            QSignalBlocker{stimAudio};
+            stimAudio->suspend();
+            QTimer::singleShot(LATENCY_NUDGE_MS, Qt::PreciseTimer, this, SLOT(on_resumeTimer_timeout()));
+        }
      }
      else if (event->key() == Qt::Key_Minus)
      {
@@ -3506,6 +3516,8 @@ void MainWindow::handleEstimAudioStateChanged(QAudio::State newState)
 {
     qDebug() << "Estim Audio status changed";
     bool shouldDeleteAndCleanUp = true;
+    if (tempyPause)
+        shouldDeleteAndCleanUp = false;
     switch (newState) {
         case QAudio::IdleState:
             // Finished playing (no more data)
@@ -3668,4 +3680,12 @@ void MainWindow::on_actionExport_E_Stim_Track_triggered()
 
     EstimWavFileWriter writer(exportFilename);
     writer.writeFile();
+}
+
+void MainWindow::on_resumeTimer_timeout()
+{
+    QSignalBlocker{stimAudio};
+    if (stimAudio != nullptr)
+        stimAudio->resume();
+    tempyPause = false;
 }

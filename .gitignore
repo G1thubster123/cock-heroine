@@ -1,3 +1,4 @@
 .vs
 build
 *.pro.user
+*.swp
