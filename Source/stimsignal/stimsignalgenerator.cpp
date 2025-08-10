@@ -12,7 +12,8 @@
 #include "stimsignal/singlechannelsignalgenerator.h"
 #include "stimsignal/dualchannelsignalgenerator.h"
 #include "separatelnrsignalgenerator.h"
-#include "stimsignal/triphasesignalgenerator.h"
+#include "stimsignal/triphasestrokessignalgenerator.h"
+#include "stimsignal/triphasevirtualstrokersignalgenerator.h"
 #include "modifiers/waypointlist.h"
 #include "modifiers/waypoint.h"
 
@@ -165,14 +166,16 @@ StimSignalGenerator *StimSignalGenerator::createFromPrefs(QObject *parent)
     QAudioFormat format = OptionsDialog::getEstimAudioFormat();
     switch (OptionsDialog::getEstimSignalType())
     {
-    case MONO:
+    case MONO_PULSE:
         return new SingleChannelSignalGenerator(format, parent);
-    case STEREO:
+    case STEREO_PULSE:
         return new DualChannelSignalGenerator(format, parent);
-    case SEPARATE_L_AND_R:
+    case SEPARATE_L_AND_R_PULSES:
         return new SeparateLnRSignalGenerator(format, parent);
-    case TRIPHASE:
-        return new TriphaseSignalGenerator(format, parent);
+    case TRIPHASE_STROKES:
+        return new TriphaseStrokesSignalGenerator(format, parent);
+    case TRIPHASE_VIRTUAL_STROKER:
+        return new TriphaseVirtualStrokerSignalGenerator(format, parent);
     default:
         return new SingleChannelSignalGenerator(format, parent);
     }

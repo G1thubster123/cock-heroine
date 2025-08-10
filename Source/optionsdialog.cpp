@@ -64,6 +64,7 @@
 #define PREF_CONNECT_TO_ARDUINO "Connect To Arduino"
 #define DEFAULT_PREF_CONNECT_TO_ARDUINO true
 
+//E-stim page
 #define PREF_ESTIM_ENABLED "Enable Estim"
 #define DEFAULT_PREF_ESTIM_ENABLED false
 #define PREF_ESTIM_OUTPUT_DEVICE "Estim Output Device"
@@ -75,10 +76,20 @@
 #define PREF_ESTIM_SAMPLE_RATE "Estim Sample Rate"
 #define DEFAULT_PREF_ESTIM_SAMPLE_RATE "11025"
 #define PREF_ESTIM_TRIPHASE_FREQUENCY_START "Triphase Estim Frequency At Start"
+#define PREF_ESTIM_TRIPHASE_STROKER_FREQUENCY_START "Triphase Estim Stroker Frequency At Start"
 #define PREF_ESTIM_LEFT_FREQUENCY_START "Left Channel Estim Frequency At Start"
 #define PREF_ESTIM_RIGHT_FREQUENCY_START "Right Channel Estim Frequency At Start"
 #define DEFAULT_PREF_ESTIM_FREQUENCY_START 500
 #define PREF_ESTIM_TRIPHASE_FREQUENCY_END "Triphase Estim Frequency At End"
+#define PREF_ESTIM_TRIPHASE_STROKER_FREQUENCY_END "Triphase Estim Stroker Frequency At End"
+#define PREF_ESTIM_TRIPHASE_STROKER_MIN_SPEED "Triphase Estim Stroker Minimum Speed"
+#define DEFAULT_PREF_ESTIM_TRIPHASE_STROKER_MIN_SPEED 20
+#define PREF_ESTIM_TRIPHASE_STROKER_MAX_SPEED "Triphase Estim Stroker Maximum Speed"
+#define DEFAULT_PREF_ESTIM_TRIPHASE_STROKER_MAX_SPEED 250
+#define PREF_ESTIM_TRIPHASE_STROKER_MIN_VOL "Triphase Estim Stroker Minimum Volume"
+#define DEFAULT_PREF_ESTIM_TRIPHASE_STROKER_MIN_VOL 75
+#define PREF_ESTIM_TRIPHASE_STROKER_MAX_VOL "Triphase Estim Stroker Maximum Volume"
+#define DEFAULT_PREF_ESTIM_TRIPHASE_STROKER_MAX_VOL 100
 #define PREF_ESTIM_LEFT_FREQUENCY_END "Left Channel Estim Frequency At End"
 #define PREF_ESTIM_RIGHT_FREQUENCY_END "Right Channel Estim Frequency At End"
 #define DEFAULT_PREF_ESTIM_FREQUENCY_END 400
@@ -86,6 +97,12 @@
 #define DEFAULT_PREF_ESTIM_VOL_INCREASE 50
 #define PREF_ESTIM_MAX_STROKE_DURATION "Estim Max Stroke Duration"
 #define DEFAULT_PREF_ESTIM_MAX_STROKE_DURATION 500
+#define PREF_ESTIM_STROKER_FADE_IN_TIME "Estim Virtual Stroker Fade-In Time"
+#define DEFAULT_PREF_ESTIM_STROKER_FADE_IN_TIME 2500
+#define PREF_ESTIM_STROKER_VOLUME_SMOOTHING_TIME "Estim Virtual Stroker Maximum Volume-Smoothing Length"
+#define DEFAULT_PREF_ESTIM_STROKER_VOLUME_SMOOTHING_TIME 1000
+#define PREF_ESTIM_STROKER_FADE_OUT_TIME "Estim Virtual Stroker Fade-Out Time"
+#define DEFAULT_PREF_ESTIM_STROKER_FADE_OUT_TIME 500
 #define PREF_ESTIM_BEAT_FADE_IN_TIME "Estim Beat Fade-In Time"
 #define DEFAULT_PREF_ESTIM_BEAT_FADE_IN_TIME 1000
 #define PREF_ESTIM_BEAT_FADE_IN_ANTICIPATION "Estim Beat Fade-In Anticipation"
@@ -103,6 +120,7 @@
 #define DEFAULT_PREF_ESTIM_LEFT_CHANNEL_STROKE_STYLE PREF_ESTIM_STARTS_ON_BEAT_STYLE
 #define DEFAULT_PREF_ESTIM_RIGHT_CHANNEL_STROKE_STYLE PREF_ESTIM_ENDS_ON_BEAT_STYLE
 #define PREF_ESTIM_INVERT_STROKES "Invert Estim Strokes"
+#define PREF_ESTIM_STROKER_INVERT_STROKES "Invert Estim Stroker Strokes"
 #define DEFAULT_PREF_ESTIM_INVERT_STROKES false
 #define PREF_ESTIM_START_FADE_IN_TIME "Estim Fade-In Time On Playback Start"
 #define DEFAULT_PREF_ESTIM_START_FADE_IN_TIME 1500
@@ -290,6 +308,18 @@ void OptionsDialog::setControlsFromPreferences()
     ui->estimCompressorStrengthSpinBox->setValue(settings.value(PREF_ESTIM_COMPRESSOR_STRENGTH, DEFAULT_PREF_ESTIM_COMPRESSOR_STRENGTH).toInt());
     ui->estimCompressorReleaseSpinBox->setValue(settings.value(PREF_ESTIM_COMPRESSOR_RELEASE_TIME, DEFAULT_PREF_ESTIM_COMPRESSOR_RELEASE_TIME).toDouble());
 
+    //triphase virtual stroker
+    ui->estimTriphaseStrokerStartingFrequencySpinbox->setValue(settings.value(PREF_ESTIM_TRIPHASE_STROKER_FREQUENCY_START, DEFAULT_PREF_ESTIM_FREQUENCY_START).toInt());
+    ui->estimTriphaseStrokerEndingFrequencySpinbox->setValue(settings.value(PREF_ESTIM_TRIPHASE_STROKER_FREQUENCY_END, DEFAULT_PREF_ESTIM_FREQUENCY_END).toInt());
+    ui->estimStrokerFadeInTimeSpinBox->setValue(settings.value(PREF_ESTIM_STROKER_FADE_IN_TIME, DEFAULT_PREF_ESTIM_STROKER_FADE_IN_TIME).toInt());
+    ui->estimStrokerFadeOutTimeSpinBox->setValue(settings.value(PREF_ESTIM_STROKER_FADE_OUT_TIME, DEFAULT_PREF_ESTIM_STROKER_FADE_OUT_TIME).toInt());
+    ui->estimStrokerVolumeTransitionMaxLengthSpinBox->setValue(settings.value(PREF_ESTIM_STROKER_VOLUME_SMOOTHING_TIME, DEFAULT_PREF_ESTIM_STROKER_VOLUME_SMOOTHING_TIME).toInt());
+    ui->estimTriphaseStrokerMaxSpeedSpinbox->setValue(settings.value(PREF_ESTIM_TRIPHASE_STROKER_MAX_SPEED, DEFAULT_PREF_ESTIM_TRIPHASE_STROKER_MAX_SPEED).toInt());
+    ui->estimTriphaseStrokerMinSpeedSpinbox->setValue(settings.value(PREF_ESTIM_TRIPHASE_STROKER_MIN_SPEED, DEFAULT_PREF_ESTIM_TRIPHASE_STROKER_MIN_SPEED).toInt());
+    ui->estimTriphaseStrokerMaxVolumeSpinbox->setValue(settings.value(PREF_ESTIM_TRIPHASE_STROKER_MAX_VOL, DEFAULT_PREF_ESTIM_TRIPHASE_STROKER_MAX_VOL).toInt());
+    ui->estimTriphaseStrokerMinVolumeSpinbox->setValue(settings.value(PREF_ESTIM_TRIPHASE_STROKER_MIN_VOL, DEFAULT_PREF_ESTIM_TRIPHASE_STROKER_MIN_VOL).toInt());
+    ui->estimStrokerInvertStrokesCheckBox->setChecked(settings.value(PREF_ESTIM_STROKER_INVERT_STROKES, DEFAULT_PREF_ESTIM_INVERT_STROKES).toBool());
+
     //left channel
     ui->estimLeftChannelStartingFrequencySpinbox->setValue(settings.value(PREF_ESTIM_LEFT_FREQUENCY_START, DEFAULT_PREF_ESTIM_FREQUENCY_START).toInt());
     ui->estimLeftChannelEndingFrequencySpinbox->setValue(settings.value(PREF_ESTIM_LEFT_FREQUENCY_END, DEFAULT_PREF_ESTIM_FREQUENCY_END).toInt());
@@ -421,6 +451,18 @@ void OptionsDialog::setPreferencesFromControls()
     settings.setValue(PREF_ESTIM_COMPRESSOR_BITE_TIME, ui->estimCompressorBiteTimeSpinBox->value());
     settings.setValue(PREF_ESTIM_COMPRESSOR_STRENGTH, ui->estimCompressorStrengthSpinBox->value());
     settings.setValue(PREF_ESTIM_COMPRESSOR_RELEASE_TIME, ui->estimCompressorReleaseSpinBox->value());
+
+    //triphase virtual stroker
+    settings.setValue(PREF_ESTIM_TRIPHASE_STROKER_FREQUENCY_START,ui->estimTriphaseStrokerStartingFrequencySpinbox->value());
+    settings.setValue(PREF_ESTIM_TRIPHASE_STROKER_FREQUENCY_END,ui->estimTriphaseStrokerEndingFrequencySpinbox->value());
+    settings.setValue(PREF_ESTIM_STROKER_FADE_IN_TIME,ui->estimStrokerFadeInTimeSpinBox->value());
+    settings.setValue(PREF_ESTIM_STROKER_VOLUME_SMOOTHING_TIME,ui->estimStrokerVolumeTransitionMaxLengthSpinBox->value());
+    settings.setValue(PREF_ESTIM_STROKER_FADE_OUT_TIME,ui->estimStrokerFadeOutTimeSpinBox->value());
+    settings.setValue(PREF_ESTIM_TRIPHASE_STROKER_MAX_SPEED,ui->estimTriphaseStrokerMaxSpeedSpinbox->value());
+    settings.setValue(PREF_ESTIM_TRIPHASE_STROKER_MIN_SPEED,ui->estimTriphaseStrokerMinSpeedSpinbox->value());
+    settings.setValue(PREF_ESTIM_TRIPHASE_STROKER_MAX_VOL,ui->estimTriphaseStrokerMaxVolumeSpinbox->value());
+    settings.setValue(PREF_ESTIM_TRIPHASE_STROKER_MIN_VOL,ui->estimTriphaseStrokerMinVolumeSpinbox->value());
+    settings.setValue(PREF_ESTIM_STROKER_INVERT_STROKES,ui->estimStrokerInvertStrokesCheckBox->isChecked());
 
     //left channel
     settings.setValue(PREF_ESTIM_LEFT_FREQUENCY_START, ui->estimLeftChannelStartingFrequencySpinbox->value());
@@ -848,13 +890,15 @@ EstimSourceMode OptionsDialog::getEstimSourceMode()
     if (text == QApplication::translate("OptionsDialog", "Generate In Advance (Single Channel)", nullptr) ||
         text == QApplication::translate("OptionsDialog", "Generate In Advance (Dual Channel)", nullptr) ||
         text ==    QApplication::translate("OptionsDialog", "Generate In Advance (Separate L&R channels)", nullptr) ||
-        text ==    QApplication::translate("OptionsDialog", "Generate In Advance (Triphase)", nullptr))
+        text ==    QApplication::translate("OptionsDialog", "Generate In Advance (Triphase)", nullptr) ||
+        text ==    QApplication::translate("OptionsDialog", "Generate In Advance (Triphase Virtual Stroker)", nullptr))
     {
         return PREGENERATED;
     }
     if (text == QApplication::translate("OptionsDialog", "Generate On-The-Fly (Single Channel)", nullptr) ||
         text == QApplication::translate("OptionsDialog", "Generate On-The-Fly (Dual Channel)", nullptr) ||
         text ==    QApplication::translate("OptionsDialog", "Generate On-The-Fly (Separate L&R channels)", nullptr) ||
+        text ==    QApplication::translate("OptionsDialog", "Generate On-The-Fly (Triphase Virtual Stroker)", nullptr) ||
         text ==    QApplication::translate("OptionsDialog", "Generate On-The-Fly (Triphase)", nullptr))
     {
         return ON_THE_FLY;
@@ -870,7 +914,7 @@ QString OptionsDialog::getEstimSourceFilename()
 
 int OptionsDialog::getEstimChannelCount()
 {
-    if (getEstimSignalType() == MONO)
+    if (getEstimSignalType() == MONO_PULSE)
         return 1;
     else
         return 2;
@@ -884,25 +928,31 @@ EstimSignalType OptionsDialog::getEstimSignalType()
         text == QApplication::translate("OptionsDialog", "Generate In Advance (Single Channel)", nullptr) ||
         text == QApplication::translate("OptionsDialog", "Generate On-The-Fly (Single Channel)", nullptr))
     {
-        return MONO;
+        return MONO_PULSE;
     }
     if (
         text == QApplication::translate("OptionsDialog", "Generate On-The-Fly (Dual Channel)", nullptr) ||
         text == QApplication::translate("OptionsDialog", "Generate In Advance (Dual Channel)", nullptr))
     {
-        return STEREO;
+        return STEREO_PULSE;
     }
     if (
         text ==    QApplication::translate("OptionsDialog", "Generate On-The-Fly (Triphase)", nullptr) ||
         text ==    QApplication::translate("OptionsDialog", "Generate In Advance (Triphase)", nullptr))
     {
-        return TRIPHASE;
+        return TRIPHASE_STROKES;
     }
     if (
         text ==    QApplication::translate("OptionsDialog", "Generate On-The-Fly (Separate L&R channels)", nullptr) ||
         text ==    QApplication::translate("OptionsDialog", "Generate In Advance (Separate L&R channels)", nullptr))
     {
-        return SEPARATE_L_AND_R;
+        return SEPARATE_L_AND_R_PULSES;
+    }
+    if (
+        text ==    QApplication::translate("OptionsDialog", "Generate On-The-Fly (Triphase Virtual Stroker)", nullptr) ||
+        text ==    QApplication::translate("OptionsDialog", "Generate In Advance (Triphase Virtual Stroker)", nullptr))
+    {
+        return TRIPHASE_VIRTUAL_STROKER;
     }
     return UNKNOWN;
 }
@@ -962,6 +1012,18 @@ int OptionsDialog::getEstimTriphaseEndingFrequency()
     return settings.value(PREF_ESTIM_TRIPHASE_FREQUENCY_END, DEFAULT_PREF_ESTIM_FREQUENCY_END).toInt();
 }
 
+int OptionsDialog::getEstimTriphaseStrokerStartingFrequency()
+{
+    QSettings settings;
+    return settings.value(PREF_ESTIM_TRIPHASE_STROKER_FREQUENCY_START, DEFAULT_PREF_ESTIM_FREQUENCY_START).toInt();
+}
+
+int OptionsDialog::getEstimTriphaseStrokerEndingFrequency()
+{
+    QSettings settings;
+    return settings.value(PREF_ESTIM_TRIPHASE_STROKER_FREQUENCY_END, DEFAULT_PREF_ESTIM_FREQUENCY_END).toInt();
+}
+
 int OptionsDialog::getEstimTotalSignalGrowth()
 {
     QSettings settings;
@@ -980,6 +1042,12 @@ int OptionsDialog::getEstimBeatFadeInTime()
     return settings.value(PREF_ESTIM_BEAT_FADE_IN_TIME, DEFAULT_PREF_ESTIM_BEAT_FADE_IN_TIME).toInt();
 }
 
+int OptionsDialog::getEstimStrokerFadeInTime()
+{
+    QSettings settings;
+    return settings.value(PREF_ESTIM_STROKER_FADE_IN_TIME, DEFAULT_PREF_ESTIM_STROKER_FADE_IN_TIME).toInt();
+}
+
 int OptionsDialog::getEstimBeatFadeInAnticipationTime()
 {
     QSettings settings;
@@ -992,6 +1060,18 @@ int OptionsDialog::getEstimBeatFadeOutTime()
     return settings.value(PREF_ESTIM_BEAT_FADE_OUT_TIME, DEFAULT_PREF_ESTIM_BEAT_FADE_OUT_TIME).toInt();
 }
 
+int OptionsDialog::getEstimStrokerMaxVolumeTransitionLength()
+{
+    QSettings settings;
+    return settings.value(PREF_ESTIM_STROKER_VOLUME_SMOOTHING_TIME, DEFAULT_PREF_ESTIM_STROKER_VOLUME_SMOOTHING_TIME).toInt();
+}
+
+int OptionsDialog::getEstimStrokerFadeOutTime()
+{
+    QSettings settings;
+    return settings.value(PREF_ESTIM_STROKER_FADE_OUT_TIME, DEFAULT_PREF_ESTIM_STROKER_FADE_OUT_TIME).toInt();
+}
+
 int OptionsDialog::getEstimBeatFadeOutDelay()
 {
     QSettings settings;
@@ -1002,6 +1082,30 @@ int OptionsDialog::getEstimBoostShortStrokes()
 {
     QSettings settings;
     return settings.value(PREF_ESTIM_SHORT_STROKES_BOOST, DEFAULT_PREF_ESTIM_SHORT_STROKES_BOOST).toInt();
+}
+
+int OptionsDialog::getEstimStrokerMaxSpeed()
+{
+    QSettings settings;
+    return settings.value(PREF_ESTIM_TRIPHASE_STROKER_MAX_SPEED, DEFAULT_PREF_ESTIM_TRIPHASE_STROKER_MAX_SPEED).toInt();
+}
+
+int OptionsDialog::getEstimStrokerMinSpeed()
+{
+    QSettings settings;
+    return settings.value(PREF_ESTIM_TRIPHASE_STROKER_MIN_SPEED, DEFAULT_PREF_ESTIM_TRIPHASE_STROKER_MIN_SPEED).toInt();
+}
+
+int OptionsDialog::getEstimStrokerMaxVolume()
+{
+    QSettings settings;
+    return settings.value(PREF_ESTIM_TRIPHASE_STROKER_MAX_VOL, DEFAULT_PREF_ESTIM_TRIPHASE_STROKER_MAX_VOL).toInt();
+}
+
+int OptionsDialog::getEstimStrokerMinVolume()
+{
+    QSettings settings;
+    return settings.value(PREF_ESTIM_TRIPHASE_STROKER_MIN_VOL, DEFAULT_PREF_ESTIM_TRIPHASE_STROKER_MIN_VOL).toInt();
 }
 
 QString OptionsDialog::getEstimTriphaseStrokeStyle()
@@ -1041,6 +1145,12 @@ bool OptionsDialog::getEstimInvertStrokes()
 {
     QSettings settings;
     return settings.value(PREF_ESTIM_INVERT_STROKES, DEFAULT_PREF_ESTIM_INVERT_STROKES).toBool();
+}
+
+bool OptionsDialog::getEstimStrokerInvertStrokes()
+{
+    QSettings settings;
+    return settings.value(PREF_ESTIM_STROKER_INVERT_STROKES, DEFAULT_PREF_ESTIM_INVERT_STROKES).toBool();
 }
 
 int OptionsDialog::getEstimStartPlaybackFadeInTime()
@@ -1139,7 +1249,7 @@ QString OptionsDialog::getEstimSettingsFilenameSuffix()
                                                                          .arg(getEstimSignalPan());
     switch (getEstimSignalType())
     {
-    case MONO:
+    case MONO_PULSE:
     {
         QString monoOptionsString = QString("From%1to%2style%3pos%4t%5")
                                                  .arg(getEstimLeftChannelStartingFrequency())
@@ -1151,7 +1261,7 @@ QString OptionsDialog::getEstimSettingsFilenameSuffix()
                              .arg(monoOptionsString)
                                 .arg(generalOptionsString);
     }
-    case STEREO:
+    case STEREO_PULSE:
     {
         QString leftOptionsString = QString("From%1to%2style%3pos%4t%5")
                                                  .arg(getEstimLeftChannelStartingFrequency())
@@ -1170,7 +1280,7 @@ QString OptionsDialog::getEstimSettingsFilenameSuffix()
                                     .arg(rightOptionsString)
                                        .arg(generalOptionsString);
     }
-    case SEPARATE_L_AND_R:
+    case SEPARATE_L_AND_R_PULSES:
     {
         QString leftOptionsString = QString("From%1to%2t%5")
                                                  .arg(getEstimLeftChannelStartingFrequency())
@@ -1185,7 +1295,7 @@ QString OptionsDialog::getEstimSettingsFilenameSuffix()
                                     .arg(rightOptionsString)
                                        .arg(generalOptionsString);
     }
-    case TRIPHASE:
+    case TRIPHASE_STROKES:
     {
         QString triphaseOptionsString =  QString("From%1to%2adsr%5-%6-%7-%8style%15%16")
                                                       .arg(getEstimTriphaseStartingFrequency())
@@ -1197,6 +1307,23 @@ QString OptionsDialog::getEstimSettingsFilenameSuffix()
                                                                                 .arg(getEstimTriphaseStrokeStyle() == PREF_ESTIM_UP_DOWN_BEAT_STROKE_STYLE ? "UDB" : "DBU")
                                                                                    .arg(getEstimInvertStrokes() ? "i" : "");
         return QString("triphase-%1-%2")
+                                 .arg(triphaseOptionsString)
+                                    .arg(generalOptionsString);
+    }
+    case TRIPHASE_VIRTUAL_STROKER:
+    {
+        QString triphaseOptionsString =  QString("Freq%1to%2Speed%3to%4mapsToVol%5to%6fadeIn%7smooth%8out%9%10")
+                                                      .arg(getEstimTriphaseStrokerStartingFrequency())
+                                                          .arg(getEstimTriphaseStrokerEndingFrequency())
+                                                                 .arg(getEstimStrokerMinSpeed())
+                                                                     .arg(getEstimStrokerMaxSpeed())
+                                                                                .arg(getEstimStrokerMinVolume())
+                                                                                    .arg(getEstimStrokerMinVolume())
+                                                                                            .arg(getEstimStrokerFadeInTime())
+                                                                                                    .arg(getEstimStrokerMaxVolumeTransitionLength())
+                                                                                                         .arg(getEstimBeatFadeOutTime())
+                                                                                                           .arg(getEstimStrokerInvertStrokes() ? "i" : "");
+        return QString("triphase-stroker-%1-%2")
                                  .arg(triphaseOptionsString)
                                     .arg(generalOptionsString);
     }

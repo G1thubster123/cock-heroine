@@ -33,7 +33,7 @@
 #include "buttplugdispatcher.h"
 #include <QWebSocket>
 #include "buttplugdeviceconfigdialog.h"
-#include "stimsignal/triphasesignalgenerator.h"
+#include "stimsignal/triphasestrokessignalgenerator.h"
 #include "beatinterval.h"
 #include <QtEndian>
 #include <stdio.h> //strcpy
@@ -2359,7 +2359,6 @@ void MainWindow::importFunscriptSeparateUpAndDown(QFile &funscript)
     int lastPos = -1;      // Position of previous point
     int currentPos = -1;   // Position of current point
     int nextPos = -1;      // Position of next point
-    bool isMovingUp = false;  // Track current direction
 
     for (int i = 0; i < actionsArr.size(); ++i)
     {
@@ -2404,7 +2403,6 @@ void MainWindow::importFunscriptSeparateUpAndDown(QFile &funscript)
 
         // Detect peaks (type 16) and troughs (type 17)
         if (currentPos > lastPos) {
-            isMovingUp = true;
             // Check for peak
             if (isLastWaypoint || nextPos <= currentPos) {
                 int strokeLength = abs(currentPos - lastEventPos);
@@ -2415,7 +2413,6 @@ void MainWindow::importFunscriptSeparateUpAndDown(QFile &funscript)
             }
         }
         else if (currentPos < lastPos) {
-            isMovingUp = false;
             // Check for trough
             if (isLastWaypoint || nextPos >= currentPos) {
                 int strokeLength = abs(currentPos - lastEventPos);

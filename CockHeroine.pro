@@ -55,7 +55,9 @@ SOURCES += Source/main.cpp\
     Source/stimsignal/modifiers/progressincreasemodifier.cpp \
     Source/stimsignal/modifiers/singlechannelbeatproximitymodifier.cpp \
     Source/stimsignal/modifiers/triphasebeatproximitymodifier.cpp \
-    Source/stimsignal/modifiers/triphasemodifier.cpp \
+    Source/stimsignal/modifiers/triphasebeatstrokesmodifier.cpp \
+    Source/stimsignal/modifiers/triphasevirtualstrokerpositionmodifier.cpp \
+    Source/stimsignal/modifiers/triphasevirtualstrokerspeedmodifier.cpp \
     Source/stimsignal/modifiers/waypoint.cpp \
     Source/stimsignal/modifiers/waypointfollowermodifier.cpp \
     Source/stimsignal/modifiers/waypointlist.cpp \
@@ -71,7 +73,8 @@ SOURCES += Source/main.cpp\
     Source/stimsignal/stimsignalsamplefactory.cpp \
     Source/stimsignal/stimsignalsource.cpp \
     Source/stimsignal/stimsignalworker.cpp \
-    Source/stimsignal/triphasesignalgenerator.cpp \
+    Source/stimsignal/triphasestrokessignalgenerator.cpp \
+    Source/stimsignal/triphasevirtualstrokersignalgenerator.cpp \
     Source/syncfilewriter.cpp \
     Source/vibratorpulsefeatureparams.cpp \
     Source/wavefileexporter.cpp \
@@ -144,7 +147,9 @@ HEADERS  += Source/mainwindow.h \
     Source/stimsignal/modifiers/progressincreasemodifier.h \
     Source/stimsignal/modifiers/singlechannelbeatproximitymodifier.h \
     Source/stimsignal/modifiers/triphasebeatproximitymodifier.h \
-    Source/stimsignal/modifiers/triphasemodifier.h \
+    Source/stimsignal/modifiers/triphasebeatstrokesmodifier.h \
+    Source/stimsignal/modifiers/triphasevirtualstrokerpositionmodifier.h \
+    Source/stimsignal/modifiers/triphasevirtualstrokerspeedmodifier.h \
     Source/stimsignal/modifiers/waypoint.h \
     Source/stimsignal/modifiers/waypointfollowermodifier.h \
     Source/stimsignal/modifiers/waypointlist.h \
@@ -160,7 +165,8 @@ HEADERS  += Source/mainwindow.h \
     Source/stimsignal/stimsignalsamplefactory.h \
     Source/stimsignal/stimsignalsource.h \
     Source/stimsignal/stimsignalworker.h \
-    Source/stimsignal/triphasesignalgenerator.h \
+    Source/stimsignal/triphasestrokessignalgenerator.h \
+    Source/stimsignal/triphasevirtualstrokersignalgenerator.h \
     Source/syncfilewriter.h \
     Source/vibratorpulsefeatureparams.h \
     Source/wavefileexporter.h \

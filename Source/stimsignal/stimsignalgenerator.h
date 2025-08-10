@@ -32,7 +32,6 @@ class StimSignalGenerator : public QIODevice, public StimSignalSource
 public:
     explicit StimSignalGenerator(QAudioFormat audioFormat, QObject *parent = nullptr);
     ~StimSignalGenerator();
-    //TODO: destructor to delete modifiers
 
     qint64 generate(char *data, qint64 maxlen);
 

@@ -13,10 +13,11 @@ enum EstimSourceMode
 
 enum EstimSignalType
 {
-    MONO,
-    STEREO,
-    TRIPHASE,
-    SEPARATE_L_AND_R,
+    MONO_PULSE,
+    STEREO_PULSE,
+    TRIPHASE_STROKES,
+    SEPARATE_L_AND_R_PULSES,
+    TRIPHASE_VIRTUAL_STROKER,
     UNKNOWN
 };
 
@@ -98,6 +99,8 @@ public:
     static EstimSignalType getEstimSignalType();
     static int getEstimSamplingRate();
     static QAudioFormat getEstimAudioFormat();
+    static int getEstimTriphaseStrokerStartingFrequency();
+    static int getEstimTriphaseStrokerEndingFrequency();
     static int getEstimTriphaseStartingFrequency();
     static int getEstimTriphaseEndingFrequency();
     static int getEstimLeftChannelStartingFrequency();
@@ -107,14 +110,22 @@ public:
     static int getEstimTotalSignalGrowth();
     static int getEstimMaxStrokeLength();
     static int getEstimBeatFadeInTime();
+    static int getEstimStrokerFadeInTime();
     static int getEstimBeatFadeInAnticipationTime();
     static int getEstimBeatFadeOutTime();
+    static int getEstimStrokerMaxVolumeTransitionLength();
+    static int getEstimStrokerFadeOutTime();
     static int getEstimBeatFadeOutDelay();
     static int getEstimBoostShortStrokes();
+    static int getEstimStrokerMaxSpeed();
+    static int getEstimStrokerMinSpeed();
+    static int getEstimStrokerMaxVolume();
+    static int getEstimStrokerMinVolume();
     static QString getEstimTriphaseStrokeStyle();
     static QString getEstimLeftChannelStrokeStyle();
     static QString getEstimRightChannelStrokeStyle();
     static bool getEstimInvertStrokes();
+    static bool getEstimStrokerInvertStrokes();
     static int getEstimStartPlaybackFadeInTime();
     static int getEstimSignalPan();
     static double getEstimCompressorBiteTime();

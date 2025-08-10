@@ -1,6 +1,6 @@
-#include "triphasesignalgenerator.h"
+#include "triphasestrokessignalgenerator.h"
 #include "modifiers/phasesettermodifier.h"
-#include "modifiers/triphasemodifier.h"
+#include "modifiers/triphasebeatstrokesmodifier.h"
 #include "modifiers/triphasebeatproximitymodifier.h"
 #include "modifiers/progressincreasemodifier.h"
 #include "modifiers/boostfaststrokesmodifier.h"
@@ -13,16 +13,16 @@
 #include "stereostimsignalsample.h"
 
 
-TriphaseSignalGenerator::TriphaseSignalGenerator(QAudioFormat audioFormat, QObject *parent)
+TriphaseStrokesSignalGenerator::TriphaseStrokesSignalGenerator(QAudioFormat audioFormat, QObject *parent)
     :
       StimSignalGenerator(audioFormat, parent)
 {
 }
 
-void TriphaseSignalGenerator::setModifiers()
+void TriphaseStrokesSignalGenerator::setModifiers()
 {
     modifiers.append(new PhaseSetterModifier(OptionsDialog::getEstimTriphaseStartingFrequency(), OptionsDialog::getEstimTriphaseEndingFrequency()));
-    modifiers.append(new TriphaseModifier());
+    modifiers.append(new TriphaseBeatStrokesModifier());
     modifiers.append(new TriphaseBeatProximityModifier());
     modifiers.append(new ProgressIncreaseModifier());
     modifiers.append(new BoostFastStrokesModifier());
@@ -34,12 +34,12 @@ void TriphaseSignalGenerator::setModifiers()
         modifiers.append(new ChannelBalanceModifier());
 }
 
-long TriphaseSignalGenerator::getStopTimestamp()
+long TriphaseStrokesSignalGenerator::getStopTimestamp()
 {
     return mainWindow->totalPlayTime() + OptionsDialog::getEstimBeatFadeOutDelay() + OptionsDialog::getEstimBeatFadeOutTime();
 }
 
-StimSignalSample *TriphaseSignalGenerator::createSample(qlonglong wholeTimestamp, qreal fractionalTimestamp)
+StimSignalSample *TriphaseStrokesSignalGenerator::createSample(qlonglong wholeTimestamp, qreal fractionalTimestamp)
 {
     return new StereoStimSignalSample(wholeTimestamp, fractionalTimestamp);
 }

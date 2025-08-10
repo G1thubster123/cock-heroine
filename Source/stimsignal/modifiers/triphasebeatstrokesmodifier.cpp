@@ -1,11 +1,11 @@
-#include "triphasemodifier.h"
+#include "triphasebeatstrokesmodifier.h"
 #include "mainwindow.h"
 #include "globals.h"
 #include "optionsdialog.h"
 #include "beatinterval.h"
 #include "stimsignal/stimsignalsample.h"
 
-TriphaseModifier::TriphaseModifier()
+TriphaseBeatStrokesModifier::TriphaseBeatStrokesModifier()
 {
     strokeLength = OptionsDialog::getEstimMaxStrokeLength();
     if (OptionsDialog::getEstimTriphaseStrokeStyle() == PREF_ESTIM_UP_DOWN_BEAT_STROKE_STYLE)
@@ -14,12 +14,12 @@ TriphaseModifier::TriphaseModifier()
         style = DOWN_BEAT_UP;
 }
 
-int TriphaseModifier::getMaxTriphaseStrokeLength()
+int TriphaseBeatStrokesModifier::getMaxTriphaseStrokeLength()
 {
     return strokeLength;
 }
 
-void TriphaseModifier::modify(StimSignalSample &sample)
+void TriphaseBeatStrokesModifier::modify(StimSignalSample &sample)
 {
     qreal phaseDifference = 0;
 

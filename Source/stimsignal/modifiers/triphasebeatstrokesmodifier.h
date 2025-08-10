@@ -8,10 +8,10 @@ enum StrokeStyle {
     DOWN_BEAT_UP
 };
 
-class TriphaseModifier : public StimSignalModifier
+class TriphaseBeatStrokesModifier : public StimSignalModifier
 {
 public:
-    TriphaseModifier();
+    TriphaseBeatStrokesModifier();
     void modify(StimSignalSample &sample) override;
 private:
     int strokeLength;
