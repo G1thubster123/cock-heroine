@@ -2,6 +2,7 @@
 #define WAYPOINTLIST_H
 
 class Waypoint;
+class Event;
 
 class WaypointList : public QList<Waypoint *>
 {
@@ -10,7 +11,7 @@ public:
     ~WaypointList();
 
     void plonkOnTheEnd(Waypoint *newValue);
-    void insertTroughs(qreal troughLevel);
+    void insertTroughs(qreal troughLevel, QVector<Event> troughPositions);
     void squeezeInBetween(int insertionIndex, Waypoint * newValue);
 };
 

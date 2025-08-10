@@ -27,19 +27,21 @@ void SeparateLnRSignalGenerator::setModifiers()
     modifiers.append(new PhaseSetterModifier(OptionsDialog::getEstimRightChannelStartingFrequency(), OptionsDialog::getEstimRightChannelEndingFrequency(), RIGHT_CHANNEL));
 
     QList<unsigned char> upstrokes{e_eventType::EVENT_STROKE_UP};
+    QList<unsigned char> downstrokes{e_eventType::EVENT_STROKE_DOWN};
     QVector<Event> upEvents = filteredEvents(upstrokes);
+    QVector<Event> downEvents = filteredEvents(downstrokes);
     WaypointList * leftVolumeWaypoints = createWaypointList(false,
                                                             0,
                                                             OptionsDialog::getEstimLeftChannelTroughLevel(),
-                                                            upEvents);
+                                                            upEvents,
+                                                            downEvents);
     modifiers.append(new WaypointFollowerModifier(leftVolumeWaypoints, LEFT_CHANNEL));
 
-    QList<unsigned char> downstrokes{e_eventType::EVENT_STROKE_DOWN};
-    QVector<Event> downEvents = filteredEvents(downstrokes);
     WaypointList * rightVolumeWaypoints = createWaypointList(false,
                                                              0,
                                                              OptionsDialog::getEstimRightChannelTroughLevel(),
-                                                             downEvents);
+                                                             downEvents,
+                                                             upEvents);
     modifiers.append(new WaypointFollowerModifier(rightVolumeWaypoints, RIGHT_CHANNEL));
 
     modifiers.append(new ProgressIncreaseModifier());

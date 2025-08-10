@@ -1,6 +1,7 @@
 #include "waypointlist.h"
 #include "optionsdialog.h"
 #include "waypoint.h"
+#include "event.h"
 
 WaypointList::WaypointList()
     :
@@ -29,7 +30,7 @@ void WaypointList::plonkOnTheEnd(Waypoint * newValue)
     append(newValue);
 }
 
-void WaypointList::insertTroughs(qreal troughLevel)
+void WaypointList::insertTroughs(qreal troughLevel, QVector<Event> troughPositions)
 {
     double amountFadedInHalfAStrokeTime = 1 - troughLevel;
     double halfAStrokeTime = (double) OptionsDialog::getEstimMaxStrokeLength() / 2;
@@ -53,8 +54,32 @@ void WaypointList::insertTroughs(qreal troughLevel)
         }
         else
         {
-            //we just need a trough halfway between the peaks
-            qreal troughPosition = (at(i)->timestamp + at(i+1)->timestamp) / 2;
+            // Check if any event from troughPositions falls between the two peaks
+            long peakStart = at(i)->timestamp;
+            long peakEnd = at(i+1)->timestamp;
+            long troughTimestamp = -1;
+
+            for (int j = 0; j < troughPositions.length(); ++j)
+            {
+                if (troughPositions[j].timestamp > peakStart && troughPositions[j].timestamp < peakEnd)
+                {
+                    troughTimestamp = troughPositions[j].timestamp;
+                    break; // Use the first matching event
+                }
+            }
+
+            qreal troughPosition;
+            if (troughTimestamp != -1)
+            {
+                // Use the event timestamp for trough position
+                troughPosition = troughTimestamp;
+            }
+            else
+            {
+                // Fall back to halfway between the peaks (original behavior)
+                troughPosition = (at(i)->timestamp + at(i+1)->timestamp) / 2;
+            }
+
             qreal troughValue = troughLevel;
             if (lengthBetweenPeaks < OptionsDialog::getEstimMaxStrokeLength())
             {

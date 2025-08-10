@@ -56,6 +56,7 @@ protected:
     int endingFrequency;
     QList<StimSignalModifier *> modifiers;
     WaypointList * createWaypointList(bool waypointsComeOnOrBeforeBeat, qreal peakPositionInCycle, qreal troughLevel, QVector<Event> eventsToUse = events);
+    WaypointList * createWaypointList(bool waypointsComeOnOrBeforeBeat, qreal peakPositionInCycle, qreal troughLevel, QVector<Event> eventsToUse, QVector<Event> troughTimings);
 
 private:
     virtual StimSignalSample * createSample(qlonglong wholeTimestamp, qreal fractionalTimestamp) = 0;

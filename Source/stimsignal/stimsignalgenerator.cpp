@@ -183,6 +183,12 @@ StimSignalGenerator *StimSignalGenerator::createFromPrefs(QObject *parent)
 
 WaypointList * StimSignalGenerator::createWaypointList(bool waypointsComeOnOrBeforeBeat, qreal peakPositionInCycle, qreal troughLevel, QVector<Event> eventsToUse)
 {
+    QVector<Event> emptyList(0);
+    return createWaypointList(waypointsComeOnOrBeforeBeat, peakPositionInCycle, troughLevel, eventsToUse, emptyList);
+}
+
+WaypointList *StimSignalGenerator::createWaypointList(bool waypointsComeOnOrBeforeBeat, qreal peakPositionInCycle, qreal troughLevel, QVector<Event> eventsToUse, QVector<Event> troughTimings)
+{
     WaypointList * list = new WaypointList();
     int maxStrokeLength = OptionsDialog::getEstimMaxStrokeLength();
     qreal minimumBaseAmount = 0.75;
@@ -236,6 +242,6 @@ WaypointList * StimSignalGenerator::createWaypointList(bool waypointsComeOnOrBef
             list->plonkOnTheEnd(new Waypoint(peak, baseAmount + boostAmount));
         }
     }
-    list->insertTroughs(troughLevel);
+    list->insertTroughs(troughLevel, troughTimings);
     return list;
 }
